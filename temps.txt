@@ -1,1 +1,1 @@
-Félix Agagnier 2h + 1h
+Félix Agagnier 2h (pug->react) + 1h (pub) + 2h (debug) = 5h

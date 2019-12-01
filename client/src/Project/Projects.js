@@ -32,7 +32,7 @@ export default () => {
     const dataJSON = await fetch("http://localhost:3000/api/projects", {
       method: "GET",
       mode: "cors",
-      header: { "accept-language": "fr" }
+      headers: { "accept-language": "fr" }
     });
     const data = await dataJSON.json();
     setProjects(data);

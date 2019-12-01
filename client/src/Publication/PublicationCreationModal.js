@@ -19,10 +19,8 @@ export default ({ show, createPublication, onClose }) => {
     );
   };
 
-  if (!show) return null;
-
   return (
-    <div className="show-modal">
+    <div hidden={!show} className="modal show-modal">
       <div className="modal-content">
         <i
           className="fa fa-window-close da-2x close-button"
@@ -30,9 +28,10 @@ export default ({ show, createPublication, onClose }) => {
         />
         <h2>Création d'une publication</h2>
         <form
-          onSubmit={() =>
-            createPublication({ year, month, title, authors, venue })
-          }
+          onSubmit={() => {
+            createPublication({ year, month, title, authors, venue });
+            onClose();
+          }}
         >
           <label htmlFor="year">Année:</label>
           <input
@@ -78,7 +77,7 @@ export default ({ show, createPublication, onClose }) => {
           <label htmlFor="authors">Auteur:</label>
           <br />
           {authors.map((author, i) => (
-            <React.Fragment key={`author${author}`}>
+            <React.Fragment key={`author${i}`}>
               <div className="author-input">
                 <input
                   type="text"
@@ -92,10 +91,12 @@ export default ({ show, createPublication, onClose }) => {
                 <div className="remove-author">
                   <i
                     className="fa fa-minus fa-3x"
-                    onClick={setAuthors([
-                      ...authors.slice(0, i),
-                      ...authors.slice(i + 1)
-                    ])}
+                    onClick={() =>
+                      setAuthors([
+                        ...authors.slice(0, i),
+                        ...authors.slice(i + 1)
+                      ])
+                    }
                   />
                 </div>
               )}
@@ -103,7 +104,7 @@ export default ({ show, createPublication, onClose }) => {
           ))}
           <div className="add-author">
             <i
-              className="fa fa-minus fa-3x"
+              className="fa fa-plus fa-3x"
               onClick={() => setAuthors([...authors, ""])}
             />
           </div>

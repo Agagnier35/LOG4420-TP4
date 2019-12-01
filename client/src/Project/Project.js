@@ -20,7 +20,7 @@ export default ({ match }) => {
       {
         method: "GET",
         mode: "cors",
-        header: { "accept-language": "fr" }
+        headers: { "accept-language": "fr" }
       }
     );
     const {

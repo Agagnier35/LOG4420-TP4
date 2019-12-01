@@ -22,11 +22,14 @@ export default ({ location, history }) => {
 
   const fetchPublications = async () => {
     setLoading(true);
-    const dataJSON = await fetch("http://localhost:3000/api/publications", {
-      method: "GET",
-      mode: "cors",
-      header: { "accept-language": "fr" }
-    });
+    const dataJSON = await fetch(
+      `http://localhost:3000/api/publications${location.search}`,
+      {
+        method: "GET",
+        mode: "cors",
+        headers: { "accept-language": "fr" }
+      }
+    );
     const data = await dataJSON.json();
     if (data.errors) {
       setErrors(data.errors);
@@ -41,7 +44,8 @@ export default ({ location, history }) => {
     const dataJSON = await fetch("http://localhost:3000/api/publications", {
       method: "POST",
       mode: "cors",
-      header: { "accept-language": "fr" }
+      headers: { "accept-language": "fr", "Content-Type": "application/json" },
+      body: JSON.stringify(pub)
     });
     const data = await dataJSON.json();
     if (data.errors) {
@@ -119,7 +123,7 @@ export default ({ location, history }) => {
   };
 
   return (
-    <div className="laoding-container">
+    <div className="loading-container">
       {loading ? (
         <Loader loading={loading} />
       ) : (
@@ -144,32 +148,38 @@ export default ({ location, history }) => {
           <PublicationCreationModal
             show={showModal}
             createPublication={createPublication}
-            onClose={setShowModal(false)}
+            onClose={() => setShowModal(false)}
           />
-          <p>Trié par: </p>
-          <select
-            id="fieldFilterSection"
-            defaultValue={pagingOptions.sortBy}
-            onChange={fieldFilterHandler}
-          >
-            {["date", "title"].map(option => (
-              <option key={`option${option}`} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-          <p>Ordonner par: </p>
-          <select
-            id="filterAscValueSection"
-            defaultValue={pagingOptions.orderBy}
-            onChange={filterAscValueHandler}
-          >
-            <option value="desc">décroissant</option>
-            <option value="asc">croissant</option>
-          </select>
+          <p>
+            Trié par:{" "}
+            <select
+              id="fieldFilterSection"
+              defaultValue={pagingOptions.sortBy}
+              onChange={fieldFilterHandler}
+            >
+              {["date", "title"].map(option => (
+                <option key={`option${option}`} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </p>
+
+          <p>
+            Ordonner par:{" "}
+            <select
+              id="filterAscValueSection"
+              defaultValue={pagingOptions.orderBy}
+              onChange={filterAscValueHandler}
+            >
+              <option value="desc">décroissant</option>
+              <option value="asc">croissant</option>
+            </select>
+          </p>
+
           <PublicationTable
             onDelete={fetchPublications}
-            publications={publications}
+            publications={publications.publications}
           />
           <div className="pagination">
             <a

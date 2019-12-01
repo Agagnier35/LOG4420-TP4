@@ -1,14 +1,12 @@
 import React from "react";
-import fetch from "fetch";
-
 import "./PublicationTable.css";
 
 export default ({ onDelete, publications }) => {
-  const handleDeletePublication = async () => {
+  const handleDeletePublication = async id => {
     await fetch(`http://localhost:3000/api/publications/${id}`, {
       method: "DELETE",
       mode: "cors",
-      header: { "accept-language": "fr" }
+      headers: { "accept-language": "fr" }
     });
     onDelete && onDelete();
   };
@@ -16,13 +14,13 @@ export default ({ onDelete, publications }) => {
   return (
     <table className="publications">
       <tbody>
-        {publications.publications.map(pub => (
+        {publications.map(pub => (
           <tr key={pub._id}>
             <td>
               <div className="del-icon" data-id={pub._id}>
                 <i
                   className="fa fa-trash-o fa-2x"
-                  onClick={handleDeletePublication}
+                  onClick={() => handleDeletePublication(pub._id)}
                 />
               </div>
             </td>
