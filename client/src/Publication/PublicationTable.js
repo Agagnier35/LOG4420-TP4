@@ -1,10 +1,7 @@
-import React from 'react'
+import React from "react";
 
-import './PublicationTable.css'
-
-const pug = window.pug
+import "./PublicationTable.css";
 
 export default props => {
-
-  return pug``
-}
+  return pug``;
+};

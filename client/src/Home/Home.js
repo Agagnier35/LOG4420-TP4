@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import fetch from "fetch";
-import moment from "moment";
 import Loader from "../Loader/Loader";
-import Feed from "./feed";
+import Feeds from "./feeds";
 
 import "./Home.css";
 
 export default () => {
   const [feeds, setFeeds] = useState([]);
   const [loading, setLoading] = useState(false);
-  const loading = false;
 
   useEffect(() => {
     fetchFeeds();
@@ -17,13 +15,13 @@ export default () => {
 
   const fetchFeeds = async () => {
     setLoading(true);
-    const feedsJSON = await fetch("http://localhost:3000/api/feed", {
+    const dataJSON = await fetch("http://localhost:3000/api/feed", {
       method: "GET",
       mode: "cors",
       header: { "accept-language": "fr" }
     });
-    const feeds = await feedsJSON.json();
-    setFeeds(feeds);
+    const data = await dataJSON.json();
+    setFeeds(data);
     setLoading(false);
   };
 
@@ -66,7 +64,7 @@ export default () => {
       </p>
       <h2>Nouvelles</h2>
       <div className="loading-container">
-        {loading ? <Loader /> : <Feed feeds={feeds} />}
+        {loading ? <Loader /> : <Feeds feeds={feeds} />}
       </div>
     </div>
   );

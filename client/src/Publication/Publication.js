@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
+import fetch from "fetch";
+import "./Publication.css";
 
-import './Publication.css'
-
-import PublicationTable from './PublicationTable'
-import PublicationCreationModal from './PublicationCreationModal'
-import Loader from '../Loader/Loader'
-
-const pug = window.pug
-const fetch = window.fetch
+import PublicationTable from "./PublicationTable";
+import PublicationCreationModal from "./PublicationCreationModal";
+import Loader from "../Loader/Loader";
 
 export default props => {
-
   // À COMPLÉTER
   // - Récupérez des publications du service web http://localhost:3000/api/publications en utilisant les 'query parameters' de l'URL (avec props.location.search)
   // - Une fois que les données ont été récupérées, le loading devient false
@@ -25,69 +21,82 @@ export default props => {
   const publications = {
     count: 0,
     publications: []
-  }
+  };
 
-  const showModal = true
+  const showModal = true;
 
   const pagingOptions = {
-    'limit': 10,
-    'pageNumber': 1,
-    'sortBy': 'date',
-    'orderBy': 'desc'
-  }
+    limit: 10,
+    pageNumber: 1,
+    sortBy: "date",
+    orderBy: "desc"
+  };
 
-  const loading = false
+  const loading = false;
 
-  const errors = []
+  const errors = [];
 
-  const numberOfPages = Math.ceil(publications.count / pagingOptions.limit)
+  const numberOfPages = Math.ceil(publications.count / pagingOptions.limit);
 
-  const previousPageNumber = pagingOptions.pageNumber === 1 ? pagingOptions.pageNumber : pagingOptions.pageNumber - 1
-  const nextPageNumber = pagingOptions.pageNumber === numberOfPages ? pagingOptions.pageNumber : pagingOptions.pageNumber + 1
+  const previousPageNumber =
+    pagingOptions.pageNumber === 1
+      ? pagingOptions.pageNumber
+      : pagingOptions.pageNumber - 1;
+  const nextPageNumber =
+    pagingOptions.pageNumber === numberOfPages
+      ? pagingOptions.pageNumber
+      : pagingOptions.pageNumber + 1;
 
   // Fonction à exécuter si on change le type de trie: sort_by
   const fieldFilterHandler = e => {
-    const search_params = new URLSearchParams(props.location.search)
-    search_params.set('sort_by', e.target.value)
+    const search_params = new URLSearchParams(props.location.search);
+    search_params.set("sort_by", e.target.value);
     props.history.push({
       pathname: props.location.pathname,
-      search: '?' + search_params.toString()
-    })
-    const newPagingOptions = { ...pagingOptions, 'sortBy': e.target.value }
-  }
+      search: "?" + search_params.toString()
+    });
+    const newPagingOptions = { ...pagingOptions, sortBy: e.target.value };
+  };
 
   // Fonction à exécuter si on change l'ordre de trie: order_by
   const filterAscValueHandler = e => {
-    const search_params = new URLSearchParams(props.location.search)
-    search_params.set('order_by', e.target.value)
+    const search_params = new URLSearchParams(props.location.search);
+    search_params.set("order_by", e.target.value);
     props.history.push({
       pathname: props.location.pathname,
-      search: '?' + search_params.toString()
-    })
-    const newPagingOptions = { ...pagingOptions, 'orderBy': e.target.value }
-  }
+      search: "?" + search_params.toString()
+    });
+    const newPagingOptions = { ...pagingOptions, orderBy: e.target.value };
+  };
 
   const elementsPerPageHandler = e => {
-    const search_params = new URLSearchParams(props.location.search)
-    search_params.set('limit', e.target.value)
-    search_params.set('page', 1)
+    const search_params = new URLSearchParams(props.location.search);
+    search_params.set("limit", e.target.value);
+    search_params.set("page", 1);
     props.history.push({
       pathname: props.location.pathname,
-      search: '?' + search_params.toString()
-    })
-    const newPagingOption = { ...pagingOptions, 'limit': Number(e.target.value), 'pageNumber': 1 }
-  }
+      search: "?" + search_params.toString()
+    });
+    const newPagingOption = {
+      ...pagingOptions,
+      limit: Number(e.target.value),
+      pageNumber: 1
+    };
+  };
 
   const paginationClickHandler = e => {
-    const search_params = new URLSearchParams(props.location.search)
-    search_params.set('limit', pagingOptions.limit)
-    search_params.set('page', e.target.dataset.pagenumber)
+    const search_params = new URLSearchParams(props.location.search);
+    search_params.set("limit", pagingOptions.limit);
+    search_params.set("page", e.target.dataset.pagenumber);
     props.history.push({
       pathname: props.location.pathname,
-      search: '?' + search_params.toString()
-    })
-    const newPagingOptions = { ...pagingOptions, 'pageNumber': Number(e.target.dataset.pagenumber) }
-  }
+      search: "?" + search_params.toString()
+    });
+    const newPagingOptions = {
+      ...pagingOptions,
+      pageNumber: Number(e.target.dataset.pagenumber)
+    };
+  };
 
   return pug`
     .loading-container
@@ -162,5 +171,5 @@ export default props => {
                 option(key="option" + value, value=value)= value
 
             | résultats par page
-  `
-}
+  `;
+};

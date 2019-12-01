@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
+import fetch from "fetch";
+import Loader from "../Loader/Loader";
 
-import Loader from '../Loader/Loader'
-
-import './Project.css'
-
-const pug = window.pug
-const fetch = window.fetch
+import "./Project.css";
 
 export default props => {
-
   // À COMPLÉTER
   // Cette composante correspond à la route '/projects/:id'. L'identifiant id est disponible dans 'props.match.params.id'
   // 1- Récupérer le project du service web http://localhost:3000/api/projects/:id avec 'fetch' et avec l'entête 'accept-language' à 'fr'.
@@ -16,9 +12,9 @@ export default props => {
   // 3- Réutilisez la composante PublicationTable
   // 4- Si on supprime une publication, la liste doit être mise à jour.
 
-  const project = {}
-  const publications = []
-  const loading = false
+  const project = {};
+  const publications = [];
+  const loading = false;
 
   return pug`
     .loading-container
@@ -56,5 +52,5 @@ export default props => {
           if publications.length > 0
             h2 Publications
             // Utilisez la composante PublicationTable
-  `
-}
+  `;
+};

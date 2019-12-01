@@ -1,20 +1,18 @@
-import React, { useState } from 'react'
-
-const pug = window.pug
-const moment = window.moment
+import React, { useState } from "react";
+import moment from "moment";
 
 export default props => {
-  const monthNames = moment.months()
+  const monthNames = moment.months();
 
   const defaultFormData = {
-    'year': '',
-    'month': '',
-    'title': '',
-    'authors': [''],
-    'venue': ''
-  }
+    year: "",
+    month: "",
+    title: "",
+    authors: [""],
+    venue: ""
+  };
 
-  const formData = defaultFormData
+  const formData = defaultFormData;
 
   return pug`
     .modal(className="show-modal")
@@ -87,6 +85,5 @@ export default props => {
           br
 
           input(type="submit", value="Création d'une publication")
-  `
-}
-
+  `;
+};
