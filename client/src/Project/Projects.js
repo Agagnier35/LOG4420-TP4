@@ -40,12 +40,6 @@ export default () => {
     setLoading(false);
   };
 
-  // À COMPLÉTER
-  // 1- Récupérer les projets du service web http://localhost:3000/api/projects avec 'fetch' et avec l'entête 'accept-language' à 'fr'.
-  // 2- Une fois que les données ont été récupérées, le loading devient false
-  // 3- Vous remarquerez qu'on duplique la description de chaque projet dans le Pug.
-  //    Évitez la duplication en créant une nouvelle composante React et insérez la dans le Pug ci-bas.
-
   const currentProjects = projects
     .filter(p => p.current)
     .sort((p1, p2) => (p1.year < p2.year ? 1 : p1.year > p2.year ? -1 : 0));

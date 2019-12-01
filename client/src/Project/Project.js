@@ -3,54 +3,83 @@ import fetch from "fetch";
 import Loader from "../Loader/Loader";
 
 import "./Project.css";
+import PublicationTable from "../Publication/PublicationTable";
 
-export default props => {
-  // À COMPLÉTER
-  // Cette composante correspond à la route '/projects/:id'. L'identifiant id est disponible dans 'props.match.params.id'
-  // 1- Récupérer le project du service web http://localhost:3000/api/projects/:id avec 'fetch' et avec l'entête 'accept-language' à 'fr'.
-  // 2- Une fois que les données ont été récupérées, le loading devient false
-  // 3- Réutilisez la composante PublicationTable
-  // 4- Si on supprime une publication, la liste doit être mise à jour.
+export default ({ match }) => {
+  const [project, setProject] = useState({});
+  const [publications, setPublications] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const project = {};
-  const publications = [];
-  const loading = false;
+  useEffect(() => {
+    fetchProject();
+  }, []);
 
-  return pug`
-    .loading-container
-      if loading
-        Loader(loading=loading)
+  const handleDeletePublication = (id) => {
+    await fetch(
+      `http://localhost:3000/api/publications/${id}`,
+      {
+        method: "DELETE",
+        mode: "cors",
+        header: { "accept-language": "fr" }
+      }
+    );
+    fetchProject()
+  }
 
-      else
-        if project && Object.keys(project).length !== 0
-          h1= project.title
+  const fetchProject = async () => {
+    setLoading(true);
+    const dataJSON = await fetch(
+      `http://localhost:3000/api/projects/${match.params.id}`,
+      {
+        method: "GET",
+        mode: "cors",
+        header: { "accept-language": "fr" }
+      }
+    );
+    const { projectData, publicationsData } = await dataJSON.json();
+    setProject(projectData);
+    setPublications(publicationsData);
+    setLoading(false);
+  };
 
-          section.description
-            footer.meta
-              p
-                | Étudiant: #{''}
-                = project.student
-
-              p
-                | Directeur(e): #{''}
-                = project.supervisor
-
-              if project.cosupervisor
-                p
-                  | Co-directeur(e)(s): #{''}
-                  = project.cosupervisor
-
-            div
-              each paragraph, i in project.description.split('\n')
-                p(key=i)= paragraph
-
-            if project.thesisUrl
-              p
-                | Pour plus d'informations, #{''}
-                a(href=project.thesisUrl) cliquez ici
-
-          if publications.length > 0
-            h2 Publications
-            // Utilisez la composante PublicationTable
-  `;
+  return (
+    <div className="loading-container">
+      {loading ? (
+        <Loader loading={loading} />
+      ) : (
+        project &&
+        Object.keys(project).length !== 0 && (
+          <>
+            <h1>{project.title}</h1>
+            <section className="description">
+              <footer className="meta">
+                <p>Étudiant: {project.student}</p>
+                <p>Directeur(e): {project.supervisor}</p>
+                {project.cosupervisor && (
+                  <p>Co-directeur(e)(s): {project.cosupervisor}</p>
+                )}
+              </footer>
+              <div>
+                {project.description.split("\n").map((paragraph, i) => (
+                  <p key={i}>{paragraph}</p> // key=i technically not recommanded but dont have a choice here
+                ))}
+              </div>
+              {project.thesisUrl && (
+                <p>
+                  Pour plus d'informations,{" "}
+                  <a href={project.thesisUrl}>cliquez ici</a>
+                </p>
+              )}
+            </section>
+            {publications.length > 0 && (
+              <>
+                <h2>Publications</h2>
+                <PublicationTable onDelete={handleDeletePublication} publications={publications}/>
+              </>
+            )}
+          </>
+        )
+      )}
+    </div>
+  );
 };

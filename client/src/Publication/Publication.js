@@ -6,7 +6,7 @@ import PublicationTable from "./PublicationTable";
 import PublicationCreationModal from "./PublicationCreationModal";
 import Loader from "../Loader/Loader";
 
-export default props => {
+export default ({ location }) => {
   // À COMPLÉTER
   // - Récupérez des publications du service web http://localhost:3000/api/publications en utilisant les 'query parameters' de l'URL (avec props.location.search)
   // - Une fois que les données ont été récupérées, le loading devient false
