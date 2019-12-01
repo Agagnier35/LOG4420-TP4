@@ -1,89 +1,127 @@
 import React, { useState } from "react";
 import moment from "moment";
 
-export default props => {
+export default ({ show, createPublication, onClose }) => {
+  const [year, setYear] = useState("");
+  const [month, setMonth] = useState("");
+  const [title, setTitle] = useState("");
+  const [authors, setAuthors] = useState([""]);
+  const [venue, setVenue] = useState("");
+
   const monthNames = moment.months();
 
-  const defaultFormData = {
-    year: "",
-    month: "",
-    title: "",
-    authors: [""],
-    venue: ""
+  const changeAuthor = (index, value) => {
+    setAuthors(
+      authors.map((author, i) => {
+        if (index !== i) return author;
+        return value;
+      })
+    );
   };
 
-  const formData = defaultFormData;
+  if (!show) return null;
 
-  return pug`
-    .modal(className="show-modal")
-      .modal-content
-        i.fa.fa-window-close.fa-2x.close-button
+  return (
+    <div className="show-modal">
+      <div className="modal-content">
+        <i
+          className="fa fa-window-close da-2x close-button"
+          onClick={onClose}
+        />
+        <h2>Création d'une publication</h2>
+        <form
+          onSubmit={() =>
+            createPublication({ year, month, title, authors, venue })
+          }
+        >
+          <label htmlFor="year">Année:</label>
+          <input
+            type="number"
+            name="year"
+            min="1900"
+            max="2099"
+            step="1"
+            value={year}
+            placeholder="Année"
+            onChange={e => setYear(e.target.value)}
+          />
 
-        h2 Création d'une publication
+          <br />
 
-        form
-          label(for="year") Année:
+          <label htmlFor="month">Mois:</label>
+          <select
+            name="month"
+            value={month}
+            onChange={e => setMonth(e.target.value)}
+          >
+            <option value=""> Mois - </option>
+            {monthNames.map((monthName, i) => (
+              <option key={monthName} value={i}>
+                {monthName.charAt(0).toUpperCase() + monthName.slice(1)}
+              </option>
+            ))}
+          </select>
 
-          input(
-            type="number",
-            name="year",
-            min="1900",
-            max="2099",
-            step="1",
-            value=formData.year,
-            placeholder="Année")
+          <br />
 
-          br
+          <label htmlFor="title">Titre:</label>
+          <input
+            type="text"
+            name="title"
+            placeholder="Titre"
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+          />
 
-          label(for="month") Mois #{' '}
+          <br />
 
-          select(name="month", value=formData.month)
-            option(value="")
-              | - #{' '} Mois - #{' '}
+          <label htmlFor="authors">Auteur:</label>
+          <br />
+          {authors.map((author, i) => (
+            <React.Fragment key={`author${author}`}>
+              <div className="author-input">
+                <input
+                  type="text"
+                  name="authors[]"
+                  placeholder="Auteur"
+                  value={author}
+                  onChange={e => changeAuthor(i, e.target.value)}
+                />
+              </div>
+              {i > 0 && (
+                <div className="remove-author">
+                  <i
+                    className="fa fa-minus fa-3x"
+                    onClick={setAuthors([
+                      ...authors.slice(0, i),
+                      ...authors.slice(i + 1)
+                    ])}
+                  />
+                </div>
+              )}
+            </React.Fragment>
+          ))}
+          <div className="add-author">
+            <i
+              className="fa fa-minus fa-3x"
+              onClick={() => setAuthors([...authors, ""])}
+            />
+          </div>
 
-            each monthName, i in monthNames
-              option(key=monthName, value=i)= monthName.charAt(0).toUpperCase() + monthName.slice(1)
+          <label htmlFor="venue">Revue:</label>
+          <input
+            type="text"
+            name="venue"
+            placeholder="Revue"
+            value={venue}
+            onChange={e => setVenue(e.target.value)}
+          />
 
-          br
+          <br />
 
-          label(for="title") Titre #{':'}
-
-          input(type="text",
-            name="title",
-            placeholder="Titre",
-            value=formData.title)
-
-          br
-
-          label(for="authors") Auteur #{':'}
-
-          br
-
-          each author, i in formData.authors
-            .author-input(key="div" + author)
-              input(
-                type="text",
-                name="authors[]"
-                placeholder="Auteur",
-                value=author)
-
-            if i > 0
-              .remove-author
-                i.fa.fa-minus.fa-3x
-
-          .add-author
-            i.fa.fa-plus.fa-3x
-
-          label(for="venue") Revue #{''}
-
-          input(
-            type="text",
-            name="venue",
-            placeholder="Revue",
-            value=formData.venue)
-
-          br
-
-          input(type="submit", value="Création d'une publication")
-  `;
+          <input type="submit" value="Création d'une publication" />
+        </form>
+      </div>
+    </div>
+  );
 };

@@ -13,15 +13,6 @@ export default ({ match }) => {
     fetchProject();
   }, []);
 
-  const handleDeletePublication = async id => {
-    await fetch(`http://localhost:3000/api/publications/${id}`, {
-      method: "DELETE",
-      mode: "cors",
-      header: { "accept-language": "fr" }
-    });
-    fetchProject();
-  };
-
   const fetchProject = async () => {
     setLoading(true);
     const dataJSON = await fetch(
@@ -74,7 +65,7 @@ export default ({ match }) => {
               <>
                 <h2>Publications</h2>
                 <PublicationTable
-                  onDelete={handleDeletePublication}
+                  onDelete={() => fetchProject()}
                   publications={publications}
                 />
               </>
