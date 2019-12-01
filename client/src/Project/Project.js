@@ -32,7 +32,10 @@ export default ({ match }) => {
         header: { "accept-language": "fr" }
       }
     );
-    const { projectData, publicationsData } = await dataJSON.json();
+    const {
+      project: projectData,
+      publications: publicationsData
+    } = await dataJSON.json();
     setProject(projectData);
     setPublications(publicationsData);
     setLoading(false);

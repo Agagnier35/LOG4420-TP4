@@ -10,9 +10,9 @@ const Feeds = ({ feeds }) => {
     <ul className="news">
       {feeds.map(feed => {
         if (feed.type === "seminar") {
-          return <Seminar feed={feed} />;
+          return <Seminar key={feed._id} feed={feed} />;
         } else if (feed.type === "news") {
-          return <News feed={feed} />;
+          return <News key={feed._id} feed={feed} />;
         }
       })}
     </ul>

@@ -1,13 +1,14 @@
 import React from "react";
+import moment from "moment";
 
 const Seminar = ({ feed }) => {
   return (
-    <li key={feed._id}>
+    <li>
       <div className="icon">
         <img src="/img/presentation-icon.png" />
       </div>
       <div className="text">
-        <div className=".post-date">{moment(feed.createdAt).format("LL")}</div>
+        <div className="post-date">{moment(feed.createdAt).format("LL")}</div>
         <div className="title">
           Prochain séminaire: <a href="#">{feed.title}</a>
         </div>

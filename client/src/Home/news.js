@@ -2,7 +2,7 @@ import React from "react";
 
 const News = ({ feed }) => {
   return (
-    <li key={feed._id}>
+    <li>
       <div className="icon">
         <i className="fa fa-file-text-o" />
       </div>

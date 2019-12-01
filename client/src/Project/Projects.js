@@ -6,7 +6,7 @@ import Loader from "../Loader/Loader";
 
 const ProjectDescription = ({ project }) => {
   return (
-    <li key={project._id}>
+    <li>
       <span>{project.student}, </span>
       <Link to={`/projects/${project._id}`}>{project.title}</Link>
       <footer className="meta">
@@ -58,7 +58,7 @@ export default () => {
           ) : (
             <ul className="projects">
               {currentProjects.map(project => (
-                <ProjectDescription project={project} />
+                <ProjectDescription key={project._id} project={project} />
               ))}
             </ul>
           )}
@@ -68,7 +68,7 @@ export default () => {
           ) : (
             <ul className="projects">
               {pastProjects.map(project => (
-                <ProjectDescription project={project} />
+                <ProjectDescription key={project._id} project={project} />
               ))}
             </ul>
           )}
