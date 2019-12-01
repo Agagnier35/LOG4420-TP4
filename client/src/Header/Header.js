@@ -1,31 +1,43 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React from "react";
+import { NavLink } from "react-router-dom";
 
-import './Header.css'
-
-const pug = window.pug
+import "./Header.css";
 
 export default props => {
-  return pug`
-    header
-      div#logo-container
-        img#logo(src="/img/logo-coding.png", alt="Logo de Polydata")
-        div#hdr
-          p#sitetitle Labo Semantic IA
-          p#subtitle
-            | Intelligence artificielle
-            br
-            | Web sémantique
+  const links = [
+    { exact: true, id: "home-link", to: "/", label: "Accueil" },
+    { id: "projects-link", to: "/projects", label: "Projets" },
+    { id: "publications-link", to: "/publications", label: "Publications" }
+  ];
 
-      nav
-        ul.links
-          li
-            NavLink#home-link(exact=true, activeClassName="active", to="/") Accueil
-
-          li
-            NavLink#projects-link(activeClassName="active", to="/projects") Projets
-
-          li
-            NavLink#publications-link(to="/publications") Publications
-    `
-}
+  return (
+    <header>
+      <div id="logo-container">
+        <img id="logo" src="/img/logo-coding.png" alt="Logo de Polydata" />
+        <div id="hdr">
+          <p id="sitetitle">Labo Semantic IA</p>
+          <p id="subtitle">
+            Intelligence artificielle
+            <br />
+            Web sémantique
+          </p>
+        </div>
+        <nav>
+          <ul className="links">
+            {links.map(l => (
+              <NavLink
+                key={l.id}
+                id={l.id}
+                activeClassName="active"
+                to={l.to}
+                exact={l.exact}
+              >
+                {l.label}
+              </NavLink>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </header>
+  );
+};
