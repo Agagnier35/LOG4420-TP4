@@ -22,11 +22,12 @@ export default props => {
             Web sémantique
           </p>
         </div>
-        <nav>
-          <ul className="links">
-            {links.map(l => (
+      </div>
+      <nav>
+        <ul className="links">
+          {links.map(l => (
+            <li key={l.id}>
               <NavLink
-                key={l.id}
                 id={l.id}
                 activeClassName="active"
                 to={l.to}
@@ -34,10 +35,10 @@ export default props => {
               >
                 {l.label}
               </NavLink>
-            ))}
-          </ul>
-        </nav>
-      </div>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </header>
   );
 };

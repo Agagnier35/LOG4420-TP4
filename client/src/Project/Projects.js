@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import fetch from "fetch";
 import "./Projects.css";
 
 import Loader from "../Loader/Loader";

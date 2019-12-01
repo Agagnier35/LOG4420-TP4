@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import fetch from "fetch";
 import Loader from "../Loader/Loader";
 
 import "./Project.css";
@@ -14,17 +13,14 @@ export default ({ match }) => {
     fetchProject();
   }, []);
 
-  const handleDeletePublication = (id) => {
-    await fetch(
-      `http://localhost:3000/api/publications/${id}`,
-      {
-        method: "DELETE",
-        mode: "cors",
-        header: { "accept-language": "fr" }
-      }
-    );
-    fetchProject()
-  }
+  const handleDeletePublication = async id => {
+    await fetch(`http://localhost:3000/api/publications/${id}`, {
+      method: "DELETE",
+      mode: "cors",
+      header: { "accept-language": "fr" }
+    });
+    fetchProject();
+  };
 
   const fetchProject = async () => {
     setLoading(true);
@@ -74,7 +70,10 @@ export default ({ match }) => {
             {publications.length > 0 && (
               <>
                 <h2>Publications</h2>
-                <PublicationTable onDelete={handleDeletePublication} publications={publications}/>
+                <PublicationTable
+                  onDelete={handleDeletePublication}
+                  publications={publications}
+                />
               </>
             )}
           </>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import fetch from "fetch";
 import "./Publication.css";
 
 import PublicationTable from "./PublicationTable";
